@@ -4,6 +4,7 @@ from scipy import stats
 import numpy as np
 
 
+st.title("Beverage price predictor")
 Model = model_functions.LoadTrainedModel("beverage_sales_predictor_xgb.json")
 UniqueValues = model_functions.LoadUniqueValues("unique_values.json")
 UniqueValues = UniqueValues["UniqueValues"]
@@ -29,13 +30,14 @@ RegionType = st.selectbox(
 
 CategoryType = st.selectbox(
         label="Choose category type",
-        options=UniqueValues["Category"]
+        options=UniqueValues["Category"],
+        index=1
         )
 
 Quantity = st.number_input(
         label="Type value of quantity:",
         min_value=1,
-        value=50,
+        value=100,
         step=1)
 
 QuantityValue = np.array([[Quantity]])
@@ -51,4 +53,4 @@ ValuesTogetherDict = {"Customer": CustomerType,
 X = model_functions.Encoder(ValuesTogetherDict, OHEncoder, OrdEncoder)
 YPred = Model.predict(X)
 
-st.write("Value:", YPred[0])
+st.write("Price in Euro:", YPred[0])
